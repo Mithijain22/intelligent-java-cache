@@ -1,0 +1,19 @@
+# Maven
+target/
+*.class
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Runtime data
+data/
+cache-api/data/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store

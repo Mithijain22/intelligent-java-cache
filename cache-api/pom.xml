@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Only ONE parent is allowed per Maven POM. This module's real parent
+        is our own multi-module root (intelligent-java-cache), NOT
+        spring-boot-starter-parent: a module can't inherit from two POMs
+        at once. To still get Spring Boot's version-managed dependencies, we
+        import spring-boot-dependencies as a BOM in dependencyManagement
+        below instead. This is the standard pattern for adding Spring Boot
+        to an existing multi-module Maven project.
+    -->
+    <parent>
+        <groupId>com.intelligentcache</groupId>
+        <artifactId>intelligent-java-cache</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cache-api</artifactId>
+    <packaging>jar</packaging>
+    <name>cache-api</name>
+    <description>
+        Spring Boot REST + WebSocket layer on top of cache-engine. This module
+        depends on cache-engine, never the other way around -- cache-engine
+        has zero knowledge that Spring exists. That separation is deliberate:
+        the engine is a reusable library; this module is one possible
+        consumer of it (a web service). You could just as easily embed
+        cache-engine in a CLI tool or another framework entirely.
+    </description>
+
+    <properties>
+        <spring-boot.version>3.3.1</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intelligentcache</groupId>
+            <artifactId>cache-engine</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: cache-api/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - cache-data:/app/data
+    environment:
+      # Override any application.yml value here, e.g.:
+      # CACHE_POLICY: LFU
+      # CACHE_CAPACITY: 500
+      JAVA_TOOL_OPTIONS: "-Xmx256m"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  cache-data:
+    # Persists snapshot JSON across container restarts -- `docker compose down`
+    # keeps it, `docker compose down -v` clears it. 

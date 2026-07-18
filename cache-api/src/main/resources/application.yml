@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: intelligent-java-cache
+
+# Custom config bound by com.intelligentcache.api.config.CacheProperties
+cache:
+  policy: LRU              # LRU | LFU
+  capacity: 1000
+  ttl-reaper-interval-ms: 5000   # 0 disables the active reaper (lazy expiration only)
+  persistence:
+    enabled: true
+    path: ./data/cache-snapshot.json
+    interval-seconds: 30
+
+logging:
+  level:
+    com.intelligentcache: INFO
